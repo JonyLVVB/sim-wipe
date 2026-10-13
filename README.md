@@ -25,12 +25,61 @@ calls afterwards.
 ## Limits
 
 - **RCS chats are not wiped.** They are stored inside Google Messages, where no other app
-  can reach them. Turn RCS chats off in Messages on a phone used this way.
+  can reach them. Turn RCS off on a phone used this way; see
+  [Turning RCS off for good](#turning-rcs-off-for-good).
 - Google Messages keeps its own cached copy of texts. It is expected to drop them once the
   system message store is empty and it is the default app again; check this on your phone.
 - A text that arrives during the few seconds SIM Wipe holds the SMS role is saved for
   Messages. A picture message arriving in that window is not downloaded.
 - Deleted rows are removed from the system databases; this is not a forensic-grade erase.
+
+## Turning RCS off for good
+
+### Why
+
+RCS ("chat features") messages live only inside Google Messages, so SIM Wipe cannot delete
+them. RCS is also registered per phone number: when a customer's SIM goes in, Messages may
+switch RCS on for that number by itself. Their incoming chats can then arrive on this phone,
+stay there after the wipe, and keep the number registered to this phone for a while after
+the SIM has moved on.
+
+The RCS switch in Messages (profile picture > Messages settings > RCS chats) only appears
+while a SIM is inserted and may turn itself back on for the next SIM. It is not a one-time
+fix.
+
+Google Messages needs the **Carrier Services** app (`com.google.android.ims`) for RCS. With
+Carrier Services disabled, RCS cannot register for any SIM. Plain SMS/MMS and normal calls do
+not depend on it.
+
+### How
+
+With USB debugging on and the phone connected to a computer with
+[adb](https://developer.android.com/tools/adb):
+
+```
+adb shell pm disable-user --user 0 com.google.android.ims
+```
+
+On some phones you can also do it without a computer: Settings > Apps > Carrier Services >
+Disable (or Force stop, then Disable). If the button is greyed out, use adb.
+
+To undo:
+
+```
+adb shell pm enable com.google.android.ims
+```
+
+### Check it worked
+
+1. Insert a SIM, wait a minute, then open Messages > profile picture > Messages settings.
+   RCS chats should be unavailable or show as not connected.
+2. Send the phone a normal text and call it, to confirm SMS and calls still work.
+
+If a customer's number was already registered for RCS on this phone, they can release it at
+[messages.google.com/disable-chat](https://messages.google.com/disable-chat).
+
+> Not yet verified on the Galaxy A16 5G test phone. Carrier Services can also handle carrier
+> features such as Wi-Fi calling on some carriers; if something stops working, re-enable it.
 
 ## Permissions
 
