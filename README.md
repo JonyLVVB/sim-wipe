@@ -62,3 +62,7 @@ adb install simwipe.apk
 ```
 
 Requires Android 10 or newer.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
