@@ -48,8 +48,9 @@ SIM Wipe can only delete what Android stores in the shared SMS/MMS database. RCS
 - RCS registers the SIM's phone number with the RCS service. On a phone that holds other
   people's SIMs, that can attach a customer's number to this phone, deliver their incoming
   chats here, and leave the number registered for a while after the SIM has moved on.
-- The RCS switch in Messages is per number and is hidden when no SIM is inserted, so it
-  cannot be turned off once in advance, and no other app is allowed to change it.
+- The RCS switch in Messages is tied to each phone number, so turning it off for one SIM
+  may not keep it off for the next. On some phones it is hidden until a SIM is inserted.
+  No other app is allowed to change it.
 
 On phones where Google Messages gets RCS through the separate **Carrier Services** app
 (package `com.google.android.ims`), disabling that app stops RCS from connecting for every
