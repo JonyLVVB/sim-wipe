@@ -7,9 +7,12 @@ It is meant for a shop or bench phone that temporarily holds other people's SIM 
 example while a number is being moved to a new phone) and must not keep their messages or
 calls afterwards.
 
-> **Status: early and not yet proven.** The app installs and runs on a Galaxy A16 5G
-> (Android 16, One UI 8), but the wipe has not yet been tested against real messages and
-> calls. Do not rely on it until you have checked it on your own phone.
+> **Status: early and not yet proven.** The app installs and runs (checked on Android 16),
+> but the wipe has not yet been tested against real messages and calls. Do not rely on it
+> until you have checked it on your own phone.
+
+It is not tied to a phone model: it should work on any Android 10 or newer phone that uses
+Google Messages for texting.
 
 ## What it does
 
@@ -71,15 +74,13 @@ To undo: `adb shell pm enable com.google.android.ims`, or enable it again in Set
 
 ### Check that it worked
 
-- Not every phone has Carrier Services. Check with
-  `adb shell pm list packages com.google.android.ims`; if nothing is listed (this was the
-  case on the Galaxy A16 5G, Android 16, used for development), RCS is built into Google
-  Messages itself and this step does nothing.
-- Newer versions of Google Messages may not depend on Carrier Services even when it is
-  installed. With a SIM inserted, open Messages > profile picture > Messages settings >
-  RCS chats and confirm the status is off or unavailable rather than "Connected".
-- Do not disable the phone maker's own IMS packages (for example `com.sec.imsservice` on
-  Samsung). Those carry normal calls and texts over LTE/5G.
+- With a SIM inserted, open Messages > profile picture > Messages settings > RCS chats and
+  confirm the status is off or unavailable rather than "Connected". Depending on the
+  version of Google Messages, RCS may not rely on Carrier Services, so do not assume.
+- If Carrier Services is not in the app list, the phone does not have it and this step
+  does not apply.
+- Only disable Google's Carrier Services. Leave the phone maker's own IMS or carrier
+  packages alone; those carry normal calls and texts over LTE/5G.
 
 If RCS still connects, the options are to turn off **RCS chats** in Messages for each SIM,
 or not to use Google Messages as the default SMS app on that phone. If a number does get
